@@ -38,7 +38,7 @@ class Individual(ABC):
     def __init__(self, height):
         self.fitness = NOT_PLAYED_YET
         self.height = setHeight(height)
-        self.tree=generateFullTree(self.height)
+        self.tree= generateFullTree(self.height)
 
     def getFitness(self):
         if self.fitness == NOT_PLAYED_YET:
