@@ -1,4 +1,5 @@
 import SudokuFileUtil as sfu
+import TournamentSelection as ts
 
 pop_size = 100
 max_generation = 100
@@ -12,4 +13,4 @@ file_path = "boards//realBoards.txt"
 file_util = sfu.SudokuFileUtil(file_path, sudoku_dim)
 board = file_util.loadPrintSudoku()
 
-select = TournamentSelection(mutation_prob, crossover_prob, good_population_percent)
+select = ts.TournamentSelection(mutation_prob, crossover_prob, good_population_percent)

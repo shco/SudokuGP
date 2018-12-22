@@ -1,6 +1,8 @@
+import Selection
 import random
 
-class TournamentSelection(Selection):
+
+class TournamentSelection:
 
     def __init__(self, mutationProb, crossoverProb, goodPopulationPercent):
         self.mutationProb = mutationProb
