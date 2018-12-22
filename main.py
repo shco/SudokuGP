@@ -10,4 +10,4 @@ sudoku_dim = 9
 
 file_path = "boards//realBoards.txt"
 file_util = sfu.SudokuFileUtil(file_path, sudoku_dim)
-# board = file_util.loadPrintSudoku()
+board = file_util.loadPrintSudoku()
