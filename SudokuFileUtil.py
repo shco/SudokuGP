@@ -24,11 +24,11 @@ class SudokuFileUtil:
             raise ValueError('The sudoku dim is not sqrt number.')
 
     def loadPrintSudoku(self):
-        self.loadSudoku();
-        self.printSudoku();
-        return self.boards;
+        self.loadSudokuMainFunc()
+        self.printSudoku()
+        return self.boards
 
-    def loadSudoku(self):
+    def loadSudokuMainFunc(self):
         randomIdx = random.randint(0,self.boardsAmount)
         return self.loadSudoku(randomIdx)
 
@@ -44,41 +44,11 @@ class SudokuFileUtil:
         founded = False
         numOfSudokuBoardInFile = 0
         try:
-
-
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(new File(filePath)));
-            String str;
-            while ((str = br.readLine()) != null && (!founded))
-            {
-                if (str.startsWith("G"))
-                {
-                    if (sudokuNum == numOfSudokuBoardInFile)
-                    {
-                        for (int i = 0; i < sudokuDimens; i++) {
-                            for (int j = 0; j < sudokuDimens; j++) {
-                                read = br.read();
-                                this.board[i][j] = Character.getNumericValue(read);
-                            }
-                        }
-                        founded=true;
-                    }
-                    else
-                        numOfSudokuBoardInFile++;
-                }
-            }
-            if (!founded)
-            {
-                System.err.println("\nYou inserted "+sudokuNum+" as board index "+
-                        ",while we have only "+boardsAmount+" boards");
-            }
-            br.close();
-        }
-        catch (IOException e) {
-            System.err.println(filePath + " file NOT found");
-        }
-        return board;
+            with open(self.file_path, "r") as f:
+                for line in f:
+                    print(type(f))
+        except:
+            print("inserted " + str(sudoku_num) + "as board index while there is only " + str(self.boardsAmount) + "boards")
 
     def restSudoku(self):
         for i in range(0,self.boards):
