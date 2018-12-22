@@ -52,7 +52,7 @@ class Node:
             leftHeight = self.left.findTreeHeight()
         if leftHeight > rightHeight:
             return leftHeight + 1
-        else
+        else :
             return rightHeight + 1
 
     def findHeight(self):
