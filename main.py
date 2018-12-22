@@ -11,3 +11,5 @@ sudoku_dim = 9
 file_path = "boards//realBoards.txt"
 file_util = sfu.SudokuFileUtil(file_path, sudoku_dim)
 board = file_util.loadPrintSudoku()
+
+select = TournamentSelection(mutation_prob, crossover_prob, good_population_percent)
