@@ -1,6 +1,6 @@
-import Individual
+from Individual import Individual
+from Terminal import Terminal
 import sys
-import Terminal
 import copy
 import random
 import math
@@ -9,7 +9,7 @@ import math
 class BoardIndividual(Individual):
 
     def __init__(self, height, board):
-        super(height)
+        super(BoardIndividual, self).__init__(height)
         self.originalSudoku = board
         self.board = board
         self.gradeboard = [[{} for a in range(len(board))] for b in range(len(board))]
@@ -20,26 +20,34 @@ class BoardIndividual(Individual):
         originalEmptyCell = self.countEmptyCellInOriginalSudoku()
         currentEmptyCell = self.countEmptyCellInSudoku()
         if originalEmptyCell == currentEmptyCell:
-            buf.append("this individual property not played\n\n")
+            buf+="this individual property not played\n\n"
         else:
             if originalEmptyCell < currentEmptyCell:
-                buf.append("Solve = " + str(originalEmptyCell - currentEmptyCell) + " / " + str(originalEmptyCell) + "\nLeft" + str(currentEmptyCell) + "\n\n")
+                buf+=("Solve = " + str(originalEmptyCell - currentEmptyCell) + " / " + str(originalEmptyCell) + "\nLeft" + str(currentEmptyCell) + "\n\n")
             else:
-                buf.append("Something Wrong in playing function\n")
+                buf+="Something Wrong in playing function\n"
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
-                buf.append(str(self.board[i][j]) + " ")
+                buf+=str(self.board[i][j]) + " "
                 if (j + 1) % squareLength == 0:
-                    buf.append(" ")
-            buf.append("\n")
+                    buf+=" "
+            buf+="\n"
             if (i+1) % squareLength == 0:
-                buf.append("\n")
-        buf.append(super(BoardIndividual, self).__str__(self))
+                buf+="\n"
+        buf+=super().__str__()
         return buf
 
     def isForward(self):
-        dics = set([y for x in self.gradeboard for y in x])
-        return len(dics) > 1 or {} not in dics
+        flat_dict = [y for x in self.gradeboard for y in x]
+        dics = [dic for dic in flat_dict if dic != {}]
+        return len(dics) > 0
+
+    def evaluateGradeboard(self):
+        for i in range(len(self.gradeboard)):
+            for j in range(len(self.gradeboard[i])):
+                for key, value in self.gradeboard[i][j].items():
+                    val = self.run(i, j, key, self.board, self.gradeboard)
+                    self.gradeboard[i][j][key] = val
 
     def play(self):
         self.initializeGradeboard()
@@ -67,18 +75,17 @@ class BoardIndividual(Individual):
             self.initializeGradeboard()
         return fitness
 
-    def evaluateGradeBoard(self):
-        for i in range(len(self.gradeboard)):
-            for j in range(len(self.gradeboard[i])):
-                for key, value in self.gradeboard[i][j].items():
-                    val = self.run(i, j, key, self.board, self.gradeboard)
-                    self.gradeboard[i][j][key] = val
-
     def initializeGradeboard(self):
-        for i in range(len(self.gradeboard)):
-            for j in range(len(self.gradeboard[i])):
-                for key, value in self.gradeboard[i][j].items():
+        all_num = set(range(1, 10))
+        for i in range(len(self.board)):
+            for j in range(len(self.board[i])):
+                if self.board[i][j] == 0:
+                    row_set = set(self.board[i])
+                    col_set = set(list(map(list, zip(*self.board)))[j])
+                    square_set = set([y for x in Terminal.getSubSquare(i, j, self.board) for y in x])
                     self.gradeboard[i][j] = {}
+                    for key in all_num - row_set - col_set - square_set:
+                        self.gradeboard[i][j][key] = None
 
     def countEmptyCellInSudoku(self):
         return Terminal.countEmptyCellInSudoku(self.board)
@@ -102,30 +109,31 @@ class BoardIndividual(Individual):
         mover = copy.tree
         parent = mover
 
-        gen = (deep for deep in range(changeInDeep) if mover.getValue().isPrimitive())
-        for deep in gen:
+        for deep in range(changeInDeep):
+            if ~mover.isFunction():
+                break
             parent = mover
             if random.uniform(0, 1) < 0.5:
                 mover = mover.getLeft()
             else:
                 mover = mover.getRight()
         self.createFullTree(treeHeight - deep, mover)
-        parent.getValue().setLeft(parent.getLeft())
-        parent.getValue().setRight(parent.getRight())
+        parent.setLeft(parent.getLeft())
+        parent.setRight(parent.getRight())
         return copy
 
     def crossover(self, object):
         copy = self.clone()
         if random.uniform(0, 1) < 0.5:
             if random.uniform(0, 1) < 0.5:
-                copy.tree.setRight(super.copyFullTree(object.tree.getRight()))
+                copy.tree.setRight(super().copyFullTree(object.tree.getRight()))
             else:
-                copy.tree.setRight(super.copyFullTree(object.tree.getLeft()))
+                copy.tree.setRight(super().copyFullTree(object.tree.getLeft()))
         else:
             if random.uniform(0, 1) < 0.5:
-                copy.tree.setLeft(super.copyFullTree(object.tree.getRight()))
+                copy.tree.setLeft(super().copyFullTree(object.tree.getRight()))
             else:
-                copy.tree.setLeft(super.copyFullTree(object.tree.getLeft()))
+                copy.tree.setLeft(super().copyFullTree(object.tree.getLeft()))
         copy.setHeight(copy.findHeight())
         return copy
 
@@ -139,5 +147,5 @@ class BoardIndividual(Individual):
                 ValueError('You should send sudoku board with NxN dimensions')
 
     def nextInc1ExcMax(self, max):
-        return 1 + (random.uniform(0, 1) * (max - 1))
+        return random.randint(1, max)
 

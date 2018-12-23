@@ -1,4 +1,4 @@
-import TerminalOrFunction
+from TerminalOrFunction import TerminalOrFunction
 import copy
 
 
@@ -20,5 +20,5 @@ class Function(TerminalOrFunction):
         return copy.deepcopy(self)
 
     def run(self, row, col, key, board, gradeboard):
-        Function.functions.get(super().operationName)(super().left.getValue().run(row, col, key, board, gradeboard)
-                                                      , super().right.getValue().run(row, col, key, board, gradeboard))
+        return Function.functions.get(self.getOperationName())(self.getLeft().run(row, col, key, board, gradeboard)
+                                                               , self.getRight().run(row, col, key, board, gradeboard))

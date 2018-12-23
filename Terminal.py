@@ -1,4 +1,4 @@
-import TerminalOrFunction
+from TerminalOrFunction import TerminalOrFunction
 import copy
 import math
 
@@ -12,48 +12,60 @@ class Terminal(TerminalOrFunction):
         return copy.deepcopy(self)
 
     def run(self, row, col, key, board, gradeboard):
-        Terminal.terminals.get(super().operationName)(row, col, key, board, gradeboard)
+        return Terminal.terminals.get(self.operationName)(row, col, key, board, gradeboard)
 
-    def countEmptyCellInRow(self, row, col, key, board, gradeboard):
-        board[row].count(0)
+    @staticmethod
+    def countEmptyCellInRow(row, col, key, board, gradeboard):
+        return board[row].count(0)
 
-    def countEmptyCellInCol(self, row, col, key, board, gradeboard):
+    @staticmethod
+    def countEmptyCellInCol(row, col, key, board, gradeboard):
         tran_board = list(map(list, zip(*board)))
-        tran_board[col].count(0)
+        return tran_board[col].count(0)
 
-    def countEmptyCellInSquare(self, row, col, key, board, gradeboard):
-        subSquare = self.getSubSquare(row, col, key, board, gradeboard)
+    @staticmethod
+    def countEmptyCellInSquare(row, col, key, board, gradeboard):
+        subSquare = Terminal.getSubSquare(row, col, board)
         return sum([row.count(0) for row in subSquare])
 
-    def numOfOptionsInCell(self, row, col, key, board, gradeboard):
+    @staticmethod
+    def numOfOptionsInCell(row, col, key, board, gradeboard):
         return len(gradeboard[row][col])
 
-    def numOfOptionsToAppearInBoard(self, row, col, key, board, gradeboard):
+    @staticmethod
+    def numOfOptionsToAppearInBoard(row, col, key, board, gradeboard):
         return len(board) - sum([row.count(key) for row in board])
 
-    def countEmptyCellsInRowsContainsNum(self, row, col, key, board, gradeboard):
+    @staticmethod
+    def countEmptyCellsInRowsContainsNum(row, col, key, board, gradeboard):
         return sum([row.count(0) for row in board if key in row])
 
-    def countEmptyCellsInColsContainsNum(self, row, col, key, board, gradeboard):
+    @staticmethod
+    def countEmptyCellsInColsContainsNum(row, col, key, board, gradeboard):
         tran_board = list(map(list, zip(*board)))
         return sum([row.count(0) for row in tran_board if key in row])
 
-    def countEmptyCellsInSquareContainsNum(self, row, col, key, board, gradeboard):
-        subSquare = self.getSubSquare(row, col, key, board, gradeboard)
+    @staticmethod
+    def countEmptyCellsInSquareContainsNum(row, col, key, board, gradeboard):
+        subSquare = Terminal.getSubSquare(row, col, board)
         return [y for x in subSquare for y in x].count(0)
 
-    def countEmptyCellsInRows_ThatNotContainsNum(self, row, col, key, board, gradeboard):
+    @staticmethod
+    def countEmptyCellsInRows_ThatNotContainsNum(row, col, key, board, gradeboard):
         return sum([row.count(0) for row in board if key not in row])
 
-    def countEmptyCellsInCols_ThatNotContainsNum(self, row, col, key, board, gradeboard):
+    @staticmethod
+    def countEmptyCellsInCols_ThatNotContainsNum(row, col, key, board, gradeboard):
         tran_board = list(map(list, zip(*board)))
         return sum([row.count(0) for row in tran_board if key not in row])
 
-    def countEmptyCellsInSquare_ThatNotContainsNum(self, row, col, key, board, gradeboard):
-        flatSubSquares = [[y for x in self.getSubSquare(i, j, board) for y in x] for i in range(0, len(board), int(math.sqrt(len(board)))) for j in range(0, len(board), int(math.sqrt(len(board))))]
+    @staticmethod
+    def countEmptyCellsInSquare_ThatNotContainsNum(row, col, key, board, gradeboard):
+        flatSubSquares = [[y for x in Terminal.getSubSquare(i, j, board) for y in x] for i in range(0, len(board), int(math.sqrt(len(board)))) for j in range(0, len(board), int(math.sqrt(len(board))))]
         return sum([row.count(0) for row in flatSubSquares if key not in row])
 
-    def getSubSquare(self, row, col, board):
+    @staticmethod
+    def getSubSquare(row, col, board):
         squareLength = int(math.sqrt(len(board)))
         if squareLength - int(squareLength):
             raise ValueError("The board is not of size NxN where N is a perfect square")
@@ -64,19 +76,20 @@ class Terminal(TerminalOrFunction):
         subSquare = [_row[rowStartIndex:rowStartIndex + squareLength] for _row in board]
         return subSquare[colStartIndex:colStartIndex + squareLength]
 
-    def countEmptyCellInSudoku(self, board):
+    @staticmethod
+    def countEmptyCellInSudoku(board):
         return [y for x in board for y in x].count(0)
 
     terminals = {
-        "countEmptyCellInRow": countEmptyCellInRow,
-        "countEmptyCellInCol": countEmptyCellInCol,
-        "countEmptyCellInSquare": countEmptyCellInSquare,
-        "numOfOptionsInCell": numOfOptionsInCell,
-        "numOfOptionsToAppearInBoard": numOfOptionsToAppearInBoard,
-        "countEmptyCellsInRowsContainsNum": countEmptyCellsInRowsContainsNum,
-        "countEmptyCellsInColsContainsNum": countEmptyCellsInColsContainsNum,
-        "countEmptyCellsInSquareContainsNum": countEmptyCellsInSquareContainsNum,
-        "countEmptyCellsInRows_ThatNotContainsNum": countEmptyCellsInRows_ThatNotContainsNum,
-        "countEmptyCellsInCols_ThatNotContainsNum": countEmptyCellsInCols_ThatNotContainsNum,
-        "countEmptyCellsInSquare_ThatNotContainsNum": countEmptyCellsInSquare_ThatNotContainsNum,
+        "countEmptyCellInRow": countEmptyCellInRow.__get__(object),
+        "countEmptyCellInCol": countEmptyCellInCol.__get__(object),
+        "countEmptyCellInSquare": countEmptyCellInSquare.__get__(object),
+        "numOfOptionsInCell": numOfOptionsInCell.__get__(object),
+        "numOfOptionsToAppearInBoard": numOfOptionsToAppearInBoard.__get__(object),
+        "countEmptyCellsInRowsContainsNum": countEmptyCellsInRowsContainsNum.__get__(object),
+        "countEmptyCellsInColsContainsNum": countEmptyCellsInColsContainsNum.__get__(object),
+        "countEmptyCellsInSquareContainsNum": countEmptyCellsInSquareContainsNum.__get__(object),
+        "countEmptyCellsInRows_ThatNotContainsNum": countEmptyCellsInRows_ThatNotContainsNum.__get__(object),
+        "countEmptyCellsInCols_ThatNotContainsNum": countEmptyCellsInCols_ThatNotContainsNum.__get__(object),
+        "countEmptyCellsInSquare_ThatNotContainsNum": countEmptyCellsInSquare_ThatNotContainsNum.__get__(object),
     }

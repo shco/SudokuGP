@@ -13,8 +13,8 @@ class Evolution:
     def evolve(self):
         self.createReportFile()
         for gen in range(self.maxGenerations):
-            writeGenerationData(gen)
-            print("Generation" + str(gen) + ": \n" + self.getBest())
+            self.writeGenerationData(gen)
+            print("Generation" + str(gen) + ": \n" + str(self.getBest()))
             if self.getBest().isIdeal():
                 break
             self.population.nextGeneration()

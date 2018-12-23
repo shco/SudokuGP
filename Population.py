@@ -1,3 +1,6 @@
+from BoardIndividual import BoardIndividual
+
+
 class Population:
 
     def __init__(self, popSize, prototype, selection):

@@ -1,23 +1,32 @@
-from abc import ABC, abstractmethod
 import random
 import copy
-import Node
+from Node import Node
+from Function import Function
+from Terminal import Terminal
 
-
-class Individual(ABC):
+class Individual(object):
 
     IDEAL_FITNESS = 0
     NOT_PLAYED_YET = -1
 
-
-    @abstractmethod
-    def evaluate(self):
-        pass
-
     def __init__(self, height):
         self.fitness = Individual.NOT_PLAYED_YET
         self.height = self.setHeight(height)
-        self.tree = self.generateFullTree(self.height)
+        self.tree = None
+        self.generateFullTree(self.height)
+        pass
+
+    def __eq__(self, other):
+        return self.getFitness() == other.getFitness()
+
+    def __ne__(self, other):
+        return self.getFitness() != other.getFitness()
+
+    def __lt__(self, other):
+        return self.getFitness() < other.getFitness()
+
+    def evaluate(self):
+        pass
 
     def getFitness(self):
         if self.fitness == Individual.NOT_PLAYED_YET:
@@ -25,7 +34,7 @@ class Individual(ABC):
         return self.fitness
 
     def run(self, row, col, key, board, gradeboard):
-        return self.tree.getValue().run(row, col, key, board, gradeboard)
+        return self.tree.run(row, col, key, board, gradeboard)
 
     def setHeight(self, height):
         if height < 1:
@@ -51,53 +60,53 @@ class Individual(ABC):
         return self.tree.findHeight()
 
     def generateFullTree(self, height):
-        root = Node()
-        self.createFullTree(height, root)
-        return root
+        self.createFullTree(height)
+        pass
 
     def reGenerateFullTree(self):
-        self.tree = self.generateFullTree(self.height)
+        self.generateFullTree(self.height)
 
-    def createFullTree(self, height, node):
+    def createFullTree(self, height):
         if height > 0:
-            node.setValue(Function(random.choice(Individual.functions.keys())))
-            self.createSubTree(height, node)
+            self.tree = Function(random.choice(list(Function.functions.keys())))
+            self.createSubTree(height, self.tree)
+            pass
         else:
             if height == 0:
-                node.setValue(Terminal(random.choice(Individual.terminals.keys())))
-                node.setLeft(None)
-                node.setRight(None)
-            else :
+                self.tree = Terminal(random.choice(list(Terminal.terminals.keys())))
+                self.tree.setLeft(None)
+                self.tree.setRight(None)
+            else:
                 raise ValueError('height has to be greater or equal to 1')
 
     def createSubTree(self, height, node):
         if height > 1:
-            node.createLeft(Function(random.choice(Individual.functions.keys())))
+            node.setLeft(Function(random.choice(list(Function.functions.keys()))))
             self.createSubTree(height - 1, node.getLeft())
-            node.createRight(Function(random.choice(Individual.functions.keys())))
+            node.setRight(Function(random.choice(list(Function.functions.keys()))))
             self.createSubTree(height - 1, node.getRight())
         else :
             if height == 1:
-                node.createLeft(Terminal(random.choice(Individual.terminals.keys())))
-                node.createRight(Terminal(random.choice(Individual.terminals.keys())))
-            else :
+                node.setLeft(Terminal(random.choice(list(Terminal.terminals.keys()))))
+                node.setRight(Terminal(random.choice(list(Terminal.terminals.keys()))))
+            else:
                 raise ValueError('height has to be greater or equal to 1')
 
-    def copyFullTree(self):
-        cloneTree = Node(self.tree.getValue().clone())
-        self.copySubTree(self.tree, cloneTree)
+    def copyFullTree(self, cloneTree):
+        copyTree = self.tree.clone()
+        self.copySubTree(self.tree, copyTree)
         return cloneTree
 
     def copySubTree(self, sourceTree, cloneTree):
         if sourceTree.getLeft() is not None:
-            cloneTree.createLeft(sourceTree.getLeft().getValue().clone())
-            self.copySubTree(sourceTree.getLeft(), cloneTree().getLeft())
+            cloneTree.createLeft(sourceTree.getLeft().clone())
+            self.copySubTree(sourceTree.getLeft(), cloneTree.getLeft())
         if sourceTree.getRight() is not None:
-            cloneTree.createRight(sourceTree.getRight().getValue().clone())
-            self.copySubTree(sourceTree.getRight(), cloneTree().getRight())
+            cloneTree.createRight(sourceTree.getRight().clone())
+            self.copySubTree(sourceTree.getRight(), cloneTree.getRight())
 
     def ConvertTreeToPrefixExpression(self, tree):
-        st = ""
+        st = "" + tree.getOperationName()
         if tree.getLeft() is not None:
             st += "( "
             st += self.ConvertTreeToPrefixExpression(tree.getLeft())
@@ -109,11 +118,13 @@ class Individual(ABC):
 
     def ConvertTreeToInfixExpression(self, tree):
         st = ""
-        if tree.getLeft() is not Node:
+        if tree is None:
+            return ""
+        if tree.getLeft() is not None and tree.getLeft() is not Node:
             st += "("
             st += self.ConvertTreeToInfixExpression(tree.getLeft())
-        st  += " " + self.ConvertFromFunctionToOperator(tree.getValue().getFunctionName()) + " "
-        if tree.getRight() is not None:
+        st += " " + self.ConvertFromFunctionToOperator(tree.getOperationName()) + " "
+        if tree.getRight() is not None and tree.getRight() is not None:
             st +=  self.ConvertTreeToInfixExpression(tree.getRight())
             st += ")"
         return st
@@ -128,6 +139,8 @@ class Individual(ABC):
             "Maximum":"Max",
             "Minimum": "Min",
         }
+        if operationsName.get(operationName) is None:
+            return operationName
         return operationsName.get(operationName)
 
     def __str__(self):

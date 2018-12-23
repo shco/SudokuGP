@@ -1,17 +1,16 @@
-from abc import ABC, abstractmethod
 import copy
-import Node
+from Node import Node
 
 
-class TerminalOrFunction(ABC, Node):
-
-    @abstractmethod
-    def run(self, row, col, key, board, gradeboard):
-        pass
+class TerminalOrFunction(Node):
 
     def __init__(self, nodeType, operationName):
+        super(TerminalOrFunction, self).__init__()
         self.nodeType = nodeType
         self.operationName = operationName
+        
+    def run(self, row, col, key, board, gradeboard):
+        pass
 
     def getNodeType(self):
         return self.nodeType

@@ -1,7 +1,5 @@
 import re
 import math
-import numpy as np
-import random
 
 class SudokuFileUtil:
     def __init__(self, file_path, sudoku_dim):
@@ -16,7 +14,7 @@ class SudokuFileUtil:
         squareLength = math.sqrt(len(self.boards))
         builder = "\n"
         builder += "File path : " + str(self.file_path) + ", Boards amount : " + str(self.boardsAmount) + ", Sudoku dimension : " + str(self.sudoku_dim) +\
-                  ", Sudoku num : " + str(self.sudoku_num_cache) + ", Empty cell : " + str(sum(sum(1 for i in row if i == '0') for row in self.boards))
+                  ", Sudoku num : " + str(self.sudoku_num_cache) + ", Empty cell : " + str(sum(sum(1 for i in row if i == 0) for row in self.boards))
 
         builder += "\n\n"
         for i in range(len(self.boards)):
@@ -50,7 +48,7 @@ class SudokuFileUtil:
         return self.boards
 
     def loadSudokuMain(self):
-        randomIdx = 41 #random.randint(0, self.boardsAmount)
+        randomIdx = 0 #random.randint(0, self.boardsAmount)
         return self.loadSudoku(randomIdx)
 
     def loadSudoku(self, sudoku_num):
@@ -71,7 +69,7 @@ class SudokuFileUtil:
                         data = re.split(r",", line)
                         place = 0
                         for i in range(self.sudoku_dim):
-                            self.boards.append(data[place:place+self.sudoku_dim])
+                            self.boards.append([int(num) for num in data[place:place+self.sudoku_dim]])
                             place += self.sudoku_dim
                         break
                     if 'Grid' in line:
@@ -96,7 +94,7 @@ class SudokuFileUtil:
     @staticmethod
     def printSudoku(board):
         squareLength = math.sqrt(len(board))
-        zerosNum = sum(sum(1 for i in row if i == '0') for row in board)
+        zerosNum = sum(sum(1 for i in row if i == 0) for row in board)
         print("Empty cell:" + str(zerosNum))
         for i in range(len(board)):
             if i % squareLength == 0:
