@@ -2,6 +2,9 @@ import Individual
 import sys
 import Terminal
 import copy
+import random
+import math
+
 
 class BoardIndividual(Individual):
 
@@ -25,7 +28,7 @@ class BoardIndividual(Individual):
                 buf.append("Something Wrong in playing function\n")
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
-                buf.append(str(board[i][j]) + " ")
+                buf.append(str(self.board[i][j]) + " ")
                 if (j + 1) % squareLength == 0:
                     buf.append(" ")
             buf.append("\n")
@@ -90,6 +93,7 @@ class BoardIndividual(Individual):
         clone = copy.deepcopy(self)
         clone.board = [[val for val in row] for row in self.originalSudoku]
         clone.initializeGradeboard()
+        return clone
 
     def mutate(self):
         copy = self.clone()
@@ -114,14 +118,14 @@ class BoardIndividual(Individual):
         copy = self.clone()
         if random.uniform(0, 1) < 0.5:
             if random.uniform(0, 1) < 0.5:
-                copy.tree.setRight(copyFullTree(object.tree.getRight()))
+                copy.tree.setRight(super.copyFullTree(object.tree.getRight()))
             else:
-                copy.tree.setRight(copyFullTree(object.tree.getLeft()))
+                copy.tree.setRight(super.copyFullTree(object.tree.getLeft()))
         else:
             if random.uniform(0, 1) < 0.5:
-                copy.tree.setLeft(copyFullTree(object.tree.getRight()))
+                copy.tree.setLeft(super.copyFullTree(object.tree.getRight()))
             else:
-                copy.tree.setLeft(copyFullTree(object.tree.getLeft()))
+                copy.tree.setLeft(super.copyFullTree(object.tree.getLeft()))
         copy.setHeight(copy.findHeight())
         return copy
 
