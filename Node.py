@@ -46,7 +46,7 @@ class Node:
         leftHeight = 0
         if  self.right is not None:
             rightHeight = self.right.findTreeHeight()
-        if  self.left is not None:
+        if self.left is not None:
             leftHeight = self.left.findTreeHeight()
         if leftHeight > rightHeight:
             return leftHeight + 1
@@ -55,5 +55,6 @@ class Node:
 
     def findHeight(self):
         return self.findTreeHeight()
+
 
 
