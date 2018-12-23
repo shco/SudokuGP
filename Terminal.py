@@ -64,6 +64,9 @@ class Terminal(TerminalOrFunction):
         subSquare = [_row[rowStartIndex:rowStartIndex + squareLength] for _row in board]
         return subSquare[colStartIndex:colStartIndex + squareLength]
 
+    def countEmptyCellInSudoku(self, board):
+        return [y for x in board for y in x].count(0)
+
     terminals = {
         "countEmptyCellInRow": countEmptyCellInRow,
         "countEmptyCellInCol": countEmptyCellInCol,
