@@ -24,11 +24,10 @@ class TournamentSelection:
             p1 = p1.crossover(p2)
         if(random.uniform(0, 1) < self.mutationProb):
             p1 = p1.mutate()
-
         return p1
 
     def select(self, pop):
-        return pop[randomIndex(int((len(pop) * self.goodPopulationPercent)))]
+        return pop[randomIndex(int(len(pop) * self.goodPopulationPercent))]
 
     def randomIndex(self, max):
         return int(random.uniform(0, 1) * max)
