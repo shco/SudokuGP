@@ -5,20 +5,6 @@ import math
 
 class Terminal(TerminalOrFunction):
     
-    terminals = {
-        "countEmptyCellInRow": Terminal.countEmptyCellInRow,
-        "countEmptyCellInCol": Terminal.countEmptyCellInCol,
-        "countEmptyCellInSquare": Terminal.countEmptyCellInSquare,
-        "numOfOptionsInCell": Terminal.numOfOptionsInCell,
-        "numOfOptionsToAppearInBoard": Terminal.numOfOptionsToAppearInBoard,
-        "countEmptyCellsInRowsContainsNum": Terminal.countEmptyCellsInRowsContainsNum,
-        "countEmptyCellsInColsContainsNum": Terminal.countEmptyCellsInColsContainsNum,
-        "countEmptyCellsInSquareContainsNum": Terminal.countEmptyCellsInSquareContainsNum,
-        "countEmptyCellsInRows_ThatNotContainsNum": Terminal.countEmptyCellsInRows_ThatNotContainsNum,
-        "countEmptyCellsInCols_ThatNotContainsNum": Terminal.countEmptyCellsInCols_ThatNotContainsNum,
-        "countEmptyCellsInSquare_ThatNotContainsNum": Terminal.countEmptyCellsInSquare_ThatNotContainsNum,
-    }
-
     def __init__(self, operationName):
         super().__init__("Function", operationName)
 
@@ -77,3 +63,17 @@ class Terminal(TerminalOrFunction):
         colStartIndex = col - colRest
         subSquare = [_row[rowStartIndex:rowStartIndex + squareLength] for _row in board]
         return subSquare[colStartIndex:colStartIndex + squareLength]
+
+    terminals = {
+        "countEmptyCellInRow": countEmptyCellInRow,
+        "countEmptyCellInCol": countEmptyCellInCol,
+        "countEmptyCellInSquare": countEmptyCellInSquare,
+        "numOfOptionsInCell": numOfOptionsInCell,
+        "numOfOptionsToAppearInBoard": numOfOptionsToAppearInBoard,
+        "countEmptyCellsInRowsContainsNum": countEmptyCellsInRowsContainsNum,
+        "countEmptyCellsInColsContainsNum": countEmptyCellsInColsContainsNum,
+        "countEmptyCellsInSquareContainsNum": countEmptyCellsInSquareContainsNum,
+        "countEmptyCellsInRows_ThatNotContainsNum": countEmptyCellsInRows_ThatNotContainsNum,
+        "countEmptyCellsInCols_ThatNotContainsNum": countEmptyCellsInCols_ThatNotContainsNum,
+        "countEmptyCellsInSquare_ThatNotContainsNum": countEmptyCellsInSquare_ThatNotContainsNum,
+    }
