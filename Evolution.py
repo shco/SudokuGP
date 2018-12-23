@@ -13,4 +13,22 @@ class Evolution:
     def evolve(self):
         self.createReportFile()
         for gen in range(self.maxGenerations):
+            writeGenerationData(gen)
+            print("Generation" + str(gen) + ": \n" + self.getBest())
+            if self.getBest().isIdeal():
+                break
+            self.population.nextGeneration()
+        if gen == self.maxGenerations:
+            print("Best attempt: \n" + self.getBest())
+        else:
+            print("Solution: \n" + self.getBest())
 
+        return self.getBest()
+
+    def createReportFile(self):
+        # TODO implement this method
+        pass
+
+    def writeGenerationData(self, gen):
+        # TODO implement this method
+        pass
