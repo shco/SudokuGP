@@ -75,8 +75,8 @@ class Terminal(TerminalOrFunction):
         colRest = int(col % squareLength)
         rowStartIndex = row - rowRest
         colStartIndex = col - colRest
-        subSquare = [_row[rowStartIndex:rowStartIndex + squareLength] for _row in board]
-        return subSquare[colStartIndex:colStartIndex + squareLength]
+        subSquare = [_col[colStartIndex:colStartIndex + squareLength] for _col in board]
+        return subSquare[rowStartIndex:rowStartIndex + squareLength]
 
     @staticmethod
     def countEmptyCellInSudoku(board):
