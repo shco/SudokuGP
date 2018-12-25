@@ -22,10 +22,10 @@ class BoardIndividual(Individual):
         if originalEmptyCell == currentEmptyCell:
             buf+="this individual property not played\n\n"
         else:
-            if originalEmptyCell < currentEmptyCell:
-                buf+=("Solve = " + str(originalEmptyCell - currentEmptyCell) + " / " + str(originalEmptyCell) + "\nLeft" + str(currentEmptyCell) + "\n\n")
+            if currentEmptyCell < originalEmptyCell:
+                buf += ("Solve = " + str(originalEmptyCell - currentEmptyCell) + " / " + str(originalEmptyCell) + "\nLeft " + str(currentEmptyCell) + "\n\n")
             else:
-                buf+="Something Wrong in playing function\n"
+                buf += "Something Wrong in playing function\n"
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 buf+=str(self.board[i][j]) + " "
@@ -98,28 +98,26 @@ class BoardIndividual(Individual):
 
     def clone(self):
         clone = copy.deepcopy(self)
+        clone.setHeight(self.height)
+        clone.tree = self.cloneFullTree()
+        clone.fitness = Individual.NOT_PLAYED_YET
         clone.board = [[val for val in row] for row in self.originalSudoku]
         clone.initializeGradeboard()
         return clone
 
     def mutate(self):
         copy = self.clone()
-        treeHeight = copy.tree.findHeight()
-        changeInDeep = self.nextInc1ExcMax(treeHeight)
-        mover = copy.tree
-        parent = mover
-
-        for deep in range(changeInDeep):
-            if ~mover.isFunction():
-                break
-            parent = mover
-            if random.uniform(0, 1) < 0.5:
-                mover = mover.getLeft()
-            else:
-                mover = mover.getRight()
-        self.createFullTree(treeHeight - deep, mover)
-        parent.setLeft(parent.getLeft())
-        parent.setRight(parent.getRight())
+        randNode = random.randint(1, copy.tree.getSize())
+        if randNode == 1:
+            copy.tree = self.createFullTree(random.randint(1, self.height))
+        else:
+            parent, removeNode = copy.tree.getParentNode(copy.tree, randNode)
+            if parent.left == removeNode:
+                parent.setLeft(self.createFullTree(random.randint(1, parent.height)))
+            if parent.right == removeNode:
+                parent.setRight(self.createFullTree(random.randint(1, parent.height)))
+        copy.tree.setSize()
+        copy.tree.findTreeHeight()
         return copy
 
     def crossover(self, object):

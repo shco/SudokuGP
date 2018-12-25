@@ -6,7 +6,7 @@ import math
 class Terminal(TerminalOrFunction):
     
     def __init__(self, operationName):
-        super().__init__("Function", operationName)
+        super().__init__("Terminal", operationName)
 
     def clone(self):
         return copy.deepcopy(self)

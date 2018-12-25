@@ -9,7 +9,7 @@ max_generation = 100
 mutation_prob = 1
 crossover_prob = 0
 good_population_percent = 0.4
-height = 1
+height = 5
 sudoku_dim = 9
 
 file_path = "boards//realBoards.txt"

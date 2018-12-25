@@ -26,3 +26,9 @@ class TerminalOrFunction(Node):
 
     def isFunction(self):
         return self.nodeType == "Function"
+
+    def set(self, other):
+        self.operationName = other.operationName
+        self.nodeType = other.nodeType
+        self.setLeft(other.getLeft())
+        self.setRight(other.getRight())
