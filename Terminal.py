@@ -47,8 +47,10 @@ class Terminal(TerminalOrFunction):
 
     @staticmethod
     def countEmptyCellsInSquareContainsNum(row, col, key, board, gradeboard):
-        subSquare = Terminal.getSubSquare(row, col, board)
-        return [y for x in subSquare for y in x].count(0)
+        subSquares = [Terminal.getSubSquare(row, col, board) for row in range(0,len(board),int(math.sqrt(len(board)))) for col in range(0,len(board),int(math.sqrt(len(board))))]
+        flatten = lambda l: [item for sublist in l for item in sublist]
+        subSquares = [flatten(square) for square in subSquares]
+        return sum([row.count(0) for row in subSquares if key in row])
 
     @staticmethod
     def countEmptyCellsInRows_ThatNotContainsNum(row, col, key, board, gradeboard):
