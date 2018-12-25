@@ -6,8 +6,8 @@ from Evolution import Evolution
 
 pop_size = 100
 max_generation = 100
-mutation_prob = 1
-crossover_prob = 0
+mutation_prob = 0.05
+crossover_prob = 0.95
 good_population_percent = 0.4
 height = 5
 sudoku_dim = 9

@@ -42,7 +42,7 @@ class Individual(object):
         return height
 
     def isIdeal(self):
-        return self.getFitness == Individual.IDEAL_FITNESS
+        return self.getFitness() == Individual.IDEAL_FITNESS
 
     def getTree(self):
         return self.tree

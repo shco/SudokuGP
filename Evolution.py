@@ -19,9 +19,9 @@ class Evolution:
                 break
             self.population.nextGeneration()
         if gen == self.maxGenerations:
-            print("Best attempt: \n" + self.getBest())
+            print("Best attempt: \n" + str(self.getBest()))
         else:
-            print("Solution: \n" + self.getBest())
+            print("Solution: \n" + str(self.getBest()))
 
         return self.getBest()
 
