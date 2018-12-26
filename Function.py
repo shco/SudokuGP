@@ -1,5 +1,4 @@
 from TerminalOrFunction import TerminalOrFunction
-import Terminal
 import copy
 
 
@@ -20,7 +19,7 @@ class Function(TerminalOrFunction):
     def clone(self):
         return copy.deepcopy(self)
 
-    def run_(self, row, col, key, board, gradeboard, squaresboard):
+    def run(self, row, col, key, board, gradeboard, squaresboard):
         return Function.functions.get(self.getOperationName())(self.getLeft().run(row, col, key, board, gradeboard, squaresboard)
                                                                , self.getRight().run(row, col, key, board, gradeboard, squaresboard))
 

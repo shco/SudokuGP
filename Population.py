@@ -1,6 +1,8 @@
 from BoardIndividual import BoardIndividual
-from multiprocessing import Pool
+import multiprocessing
+import ctypes
 import os
+
 
 class Population:
 
@@ -25,20 +27,21 @@ class Population:
         self.individuals = newPop
         self.sort()
 
+    def getFitness(self, ind):
+        # print("PID: %d, CPU: %d" % (os.getpid(), ctypes.windll.kernel32.GetCurrentProcessorNumber()))
+        ind.getFitness()
+
     def sort(self):
-        # pool = Pool(processes=10)
+        with multiprocessing.Pool(100) as p:
+            p.imap(self.getFitness, self.individuals)
+        # threads = []
         #
-        # pool.map(self.individuals.getFitness, range(0, 100, 10))
-        # pool.apply_async(os.getpid, ())
+        # for i in range(len(self.individuals)//10):
+        #     threads.append(multiprocessing.Process(target=self.threadFitness(i*10)))
+        #     threads[i].start()
         #
-        # # threads = []
-        #
-        # # for i in range(len(self.individuals)//10):
-        # #     threads.append(multiprocessing.Process(target=self.threadFitness(i*10)))
-        # #     threads[i].start()
-        # #
-        # # for i in range(len(self.individuals)//10):
-        # #     threads[i].join()
+        # for i in range(len(self.individuals)//10):
+        #     threads[i].join()
 
         self.individuals.sort()
 

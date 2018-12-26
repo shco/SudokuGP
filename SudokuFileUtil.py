@@ -1,6 +1,5 @@
 import re
 import math
-import numpy as np
 
 class SudokuFileUtil:
     def __init__(self, file_path, sudoku_dim):
