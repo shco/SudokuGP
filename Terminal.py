@@ -15,6 +15,10 @@ class Terminal(TerminalOrFunction):
         return Terminal.terminals.get(self.operationName)(row, col, key, board, gradeboard, squaresboard)
 
     @staticmethod
+    def methodIsTerminal(oparationName):
+        return oparationName in Terminal.terminals.keys()
+
+    @staticmethod
     def countEmptyCellInRow(row, col, key, board, gradeboard, squaresboard):
         return board[row].count(0)
 

@@ -24,10 +24,11 @@ class BoardIndividual(Individual):
         originalEmptyCell = self.countEmptyCellInOriginalSudoku()
         currentEmptyCell = self.countEmptyCellInSudoku()
         if originalEmptyCell == currentEmptyCell:
-            buf+="this individual property not played\n\n"
+            buf += "this individual property not played\n\n"
         else:
             if currentEmptyCell < originalEmptyCell:
-                buf += ("Solve = " + str(originalEmptyCell - currentEmptyCell) + " / " + str(originalEmptyCell) + "\nLeft " + str(currentEmptyCell) + "\n\n")
+                buf += ("Solve = " + str(originalEmptyCell - currentEmptyCell) + " / " + str(originalEmptyCell) +
+                        "\nLeft " + str(currentEmptyCell) + "\n\n")
             else:
                 buf += "Something Wrong in playing function\n"
         for i in range(len(self.board)):
@@ -37,7 +38,7 @@ class BoardIndividual(Individual):
                     buf+=" "
             buf+="\n"
             if (i+1) % squareLength == 0:
-                buf+="\n"
+                buf += "\n"
         buf+=super().__str__()
         return buf
 
@@ -80,7 +81,7 @@ class BoardIndividual(Individual):
         return fitness
 
     def initializeGradeboard(self):
-        all_num = set(range(1, 10))
+        all_num = set(range(1, 1 + len(self.board)))
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 if self.board[i][j] == 0:
@@ -125,6 +126,30 @@ class BoardIndividual(Individual):
         return copy
 
     def crossover(self, object):
+        copy = self.clone()
+        copyRandNode = random.randint(2, copy.tree.getSize())
+        copyParent, copyRemoveNode = copy.tree.getParentNode(copy.tree, copyRandNode)
+        objectRandNode = random.randint(2, object.tree.getSize())
+        objectParent, objectRemoveNode = object.tree.getParentNode(object.tree, objectRandNode)
+
+        if objectParent.height > copyParent.height:
+            if objectParent.left == objectRemoveNode:
+                objectParent.setLeft(copyRemoveNode)
+            if objectParent.right == objectRemoveNode:
+                objectParent.setRight(copyRemoveNode)
+            object.tree.setSize()
+            object.tree.findTreeHeight()
+            return object
+        else:
+            if copyParent.left == copyRemoveNode:
+                copyParent.setLeft(objectRemoveNode)
+            if copyParent.right == copyRemoveNode:
+                copyParent.setRight(objectRemoveNode)
+            copy.tree.setSize()
+            copy.tree.findTreeHeight()
+            return copy
+
+    def crossover_(self, object):
         copy = self.clone()
         if random.uniform(0, 1) < 0.5:
             if random.uniform(0, 1) < 0.5:
