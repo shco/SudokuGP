@@ -1,6 +1,6 @@
 from BoardIndividual import BoardIndividual
-from threading import Thread
-
+from multiprocessing import Pool
+import os
 
 class Population:
 
@@ -26,16 +26,25 @@ class Population:
         self.sort()
 
     def sort(self):
-        threads = []
-
-        for i in range(len(self.individuals)):
-            threads.append(Thread(target=self.individuals[i].getFitness))
-            threads[i].start()
-
-        for i in range(len(self.individuals)):
-            threads[i].join()
+        # pool = Pool(processes=10)
+        #
+        # pool.map(self.individuals.getFitness, range(0, 100, 10))
+        # pool.apply_async(os.getpid, ())
+        #
+        # # threads = []
+        #
+        # # for i in range(len(self.individuals)//10):
+        # #     threads.append(multiprocessing.Process(target=self.threadFitness(i*10)))
+        # #     threads[i].start()
+        # #
+        # # for i in range(len(self.individuals)//10):
+        # #     threads[i].join()
 
         self.individuals.sort()
+
+    def threadFitness(self, num):
+        for i in range(10):
+            self.individuals[num + i].getFitness()
 
     def getMutationProb(self):
         return self.selection.getMutationProb()
