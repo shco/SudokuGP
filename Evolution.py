@@ -1,3 +1,6 @@
+import timeit
+
+
 class Evolution:
 
     def __init__(self, population, maxGenerations):
@@ -13,11 +16,14 @@ class Evolution:
     def evolve(self):
         self.createReportFile()
         for gen in range(self.maxGenerations):
+            start = timeit.default_timer()
             self.writeGenerationData(gen)
             print("Generation" + str(gen) + ": \n" + str(self.getBest()))
             if self.getBest().isIdeal():
                 break
             self.population.nextGeneration()
+            stop = timeit.default_timer()
+            print('Time: ', stop - start)
         if gen == self.maxGenerations:
             print("Best attempt: \n" + str(self.getBest()))
         else:

@@ -1,4 +1,5 @@
 from BoardIndividual import BoardIndividual
+from threading import Thread
 
 
 class Population:
@@ -25,6 +26,15 @@ class Population:
         self.sort()
 
     def sort(self):
+        threads = []
+
+        for i in range(len(self.individuals)):
+            threads.append(Thread(target=self.individuals[i].getFitness))
+            threads[i].start()
+
+        for i in range(len(self.individuals)):
+            threads[i].join()
+
         self.individuals.sort()
 
     def getMutationProb(self):
@@ -47,4 +57,3 @@ class Population:
         for i in range(len(self.individuals)):
             sum += self.individuals[i].getFitness()
         return sum/len(self.individuals)
-    

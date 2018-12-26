@@ -1,5 +1,6 @@
 import re
 import math
+import numpy as np
 
 class SudokuFileUtil:
     def __init__(self, file_path, sudoku_dim):
@@ -48,7 +49,7 @@ class SudokuFileUtil:
         return self.boards
 
     def loadSudokuMain(self):
-        randomIdx = 0 #random.randint(0, self.boardsAmount)
+        randomIdx = 41 #random.randint(0, self.boardsAmount)
         return self.loadSudoku(randomIdx)
 
     def loadSudoku(self, sudoku_num):
