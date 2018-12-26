@@ -19,6 +19,6 @@ class Function(TerminalOrFunction):
     def clone(self):
         return copy.deepcopy(self)
 
-    def run(self, row, col, key, board, gradeboard):
-        return Function.functions.get(self.getOperationName())(self.getLeft().run(row, col, key, board, gradeboard)
-                                                               , self.getRight().run(row, col, key, board, gradeboard))
+    def run(self, row, col, key, board, gradeboard, squaresboard):
+        return Function.functions.get(self.getOperationName())(self.getLeft().run(row, col, key, board, gradeboard, squaresboard)
+                                                               , self.getRight().run(row, col, key, board, gradeboard, squaresboard))

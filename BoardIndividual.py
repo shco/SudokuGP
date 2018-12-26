@@ -13,6 +13,10 @@ class BoardIndividual(Individual):
         self.originalSudoku = board
         self.board = board
         self.gradeboard = [[{} for a in range(len(board))] for b in range(len(board))]
+        subSquares = [Terminal.getSubSquare(row, col, board) for row in range(0, len(board), int(math.sqrt(len(board))))
+                      for col in range(0, len(board), int(math.sqrt(len(board))))]
+        flatten = lambda l: [item for sublist in l for item in sublist]
+        self.subSquaresBoard = [flatten(square) for square in subSquares]
 
     def __str__(self):
         buf = ""
@@ -46,7 +50,7 @@ class BoardIndividual(Individual):
         for i in range(len(self.gradeboard)):
             for j in range(len(self.gradeboard[i])):
                 for key, value in self.gradeboard[i][j].items():
-                    val = self.run(i, j, key, self.board, self.gradeboard)
+                    val = self.run(i, j, key, self.board, self.gradeboard, self.subSquaresBoard)
                     self.gradeboard[i][j][key] = val
 
     def play(self):

@@ -33,8 +33,8 @@ class Individual(object):
             self.fitness = self.evaluate()
         return self.fitness
 
-    def run(self, row, col, key, board, gradeboard):
-        return self.tree.run(row, col, key, board, gradeboard)
+    def run(self, row, col, key, board, gradeboard, squareboard):
+        return self.tree.run(row, col, key, board, gradeboard, squareboard)
 
     def setHeight(self, height):
         if height < 1:

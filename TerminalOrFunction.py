@@ -9,7 +9,7 @@ class TerminalOrFunction(Node):
         self.nodeType = nodeType
         self.operationName = operationName
         
-    def run(self, row, col, key, board, gradeboard):
+    def run(self, row, col, key, board, gradeboard, squareboard):
         pass
 
     def getNodeType(self):
