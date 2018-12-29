@@ -10,7 +10,7 @@ mutation_prob = 0.1
 crossover_prob = 0.9
 good_population_percent = 0.4
 height = 3
-sudoku_dim = 9
+sudoku_dim = 16
 
 file_path = "boards//realBoards.txt"
 file_util = sfu.SudokuFileUtil(file_path, sudoku_dim)
