@@ -34,6 +34,8 @@ class BoardIndividual(Individual):
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 buf+=str(self.board[i][j]) + " "
+                if self.board[i][j] < 10:
+                    buf+=" "
                 if (j + 1) % squareLength == 0:
                     buf+=" "
             buf+="\n"
@@ -55,7 +57,6 @@ class BoardIndividual(Individual):
                     self.gradeboard[i][j][key] = val
 
     def play(self):
-        self.initializeGradeboard()
         fitness = self.countEmptyCellInSudoku()
         while self.isForward():
             self.evaluateGradeboard()
@@ -148,21 +149,6 @@ class BoardIndividual(Individual):
             copy.tree.setSize()
             copy.tree.findTreeHeight()
             return copy
-
-    def crossover_(self, object):
-        copy = self.clone()
-        if random.uniform(0, 1) < 0.5:
-            if random.uniform(0, 1) < 0.5:
-                copy.tree.setRight(super().copyFullTree(object.tree.getRight()))
-            else:
-                copy.tree.setRight(super().copyFullTree(object.tree.getLeft()))
-        else:
-            if random.uniform(0, 1) < 0.5:
-                copy.tree.setLeft(super().copyFullTree(object.tree.getRight()))
-            else:
-                copy.tree.setLeft(super().copyFullTree(object.tree.getLeft()))
-        copy.setHeight(copy.findHeight())
-        return copy
 
     def testIfGoodDimensionBoard(self, board):
         realSquareLength = math.sqrt(len(board))

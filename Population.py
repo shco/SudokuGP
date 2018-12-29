@@ -1,5 +1,4 @@
 from BoardIndividual import BoardIndividual
-import multiprocessing
 import ctypes
 import os
 
@@ -32,17 +31,6 @@ class Population:
         ind.getFitness()
 
     def sort(self):
-        with multiprocessing.Pool(100) as p:
-            p.imap(self.getFitness, self.individuals)
-        # threads = []
-        #
-        # for i in range(len(self.individuals)//10):
-        #     threads.append(multiprocessing.Process(target=self.threadFitness(i*10)))
-        #     threads[i].start()
-        #
-        # for i in range(len(self.individuals)//10):
-        #     threads[i].join()
-
         self.individuals.sort()
 
     def threadFitness(self, num):

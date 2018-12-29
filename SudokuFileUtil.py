@@ -102,6 +102,9 @@ class SudokuFileUtil:
             toPrint = ""
             for j in range(len(board)):
                 if j % squareLength == 0:
+                    toPrint += "  "
+                toPrint += str(board[i][j]) + " "
+                if board[i][j] < 10:
                     toPrint += " "
-                toPrint = toPrint + str(board[i][j]) + " "
+
             print(toPrint)
