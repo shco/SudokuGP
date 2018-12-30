@@ -1,5 +1,6 @@
 from Individual import Individual
 from Terminal import Terminal
+from Function import Function
 import sys
 import copy
 import random
@@ -128,11 +129,26 @@ class BoardIndividual(Individual):
 
     def crossover(self, object):
         copy = self.clone()
-        copyRandNode = random.randint(2, copy.tree.getSize())
-        copyParent, copyRemoveNode = copy.tree.getParentNode(copy.tree, copyRandNode)
-        objectRandNode = random.randint(2, object.tree.getSize())
-        objectParent, objectRemoveNode = object.tree.getParentNode(object.tree, objectRandNode)
-
+        if copy.tree.getSize() == 1 and object.tree.getSize() == 1:
+            node = Function(random.choice(list(Function.functions.keys())))
+            node.setRight(copy.tree)
+            node.setLeft(object.tree)
+            copy.tree = node
+            copy.tree.setSize()
+            copy.tree.findTreeHeight()
+            return copy
+        if copy.tree.getSize() == 1:
+            copyParent = copy.tree
+            copyRemoveNode = copy.tree
+        else:
+            copyRandNode = random.randint(2, copy.tree.getSize())
+            copyParent, copyRemoveNode = copy.tree.getParentNode(copy.tree, copyRandNode)
+        if object.tree.getSize() == 1:
+            objectParent = object.tree
+            objectRemoveNode = object.tree
+        else:
+            objectRandNode = random.randint(2, object.tree.getSize())
+            objectParent, objectRemoveNode = object.tree.getParentNode(object.tree, objectRandNode)
         if objectParent.height > copyParent.height:
             if objectParent.left == objectRemoveNode:
                 objectParent.setLeft(copyRemoveNode)
