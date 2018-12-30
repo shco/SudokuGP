@@ -4,19 +4,22 @@ from BoardIndividual import BoardIndividual
 from Population import Population
 from Evolution import Evolution
 
-boards_to_load = [38, 39, 40]
-train_set_size = len(boards_to_load)
+train_set = [38, 39, 40]
+train_set_size = len(train_set)
 
 pop_size = 100
 max_generation = 100
+max_generation = 2
 mutation_prob = 0.1
 crossover_prob = 0.9
 good_population_percent = 0.3
+height = 5
 height = 3
 sudoku_dim = 9
 
 file_path = "boards//realBoards.txt"
 file_util = sfu.SudokuFileUtil(file_path, sudoku_dim, train_set_size, boards_to_load)
+file_util = sfu.SudokuFileUtil(file_path, sudoku_dim, train_set_size, train_set)
 boards = file_util.loadPrintSudoku()
 
 prototype = BoardIndividual(height, boards)
@@ -26,3 +29,14 @@ first_pop.replaceIndividual('(((countCellOptions+countNumPossibleAtThisCol)+(cou
 evolution = Evolution(first_pop, max_generation)
 best_individual = evolution.evolve()
 
+# test
+test_set = [41]
+test_set_size = len(test_set)
+file_util = sfu.SudokuFileUtil(file_path, sudoku_dim, test_set_size, test_set)
+boards = file_util.loadPrintSudoku()
+
+best_individual.setBoards(boards)
+for i in range(len(boards)):
+    best_individual.initializeGradeboard(i)
+fitness = best_individual.play()
+print("test_set fitness is:" + str(fitness))

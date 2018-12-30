@@ -62,6 +62,20 @@ class BoardIndividual(Individual):
         buf += super().__str__()
         return buf
 
+    def setBoards(self, boards):
+        self.originalSudoku = copy.deepcopy(boards)
+        self.boards = copy.deepcopy(boards)
+        self.gradeboard = []
+        self.subSquaresBoard = []
+        for i in range(len(boards)):
+            board = boards[i]
+            self.gradeboard.append([[{} for a in range(len(board))] for b in range(len(board))])
+            subSquares = [Terminal.getSubSquare(row, col, board) for row in
+                          range(0, len(board), int(math.sqrt(len(board))))
+                          for col in range(0, len(board), int(math.sqrt(len(board))))]
+            flatten = lambda l: [item for sublist in l for item in sublist]
+            self.subSquaresBoard.append([flatten(square) for square in subSquares])
+
     def isForward(self, board_idx):
         flat_dict = [y for x in self.gradeboard[board_idx] for y in x]
         dics = [dic for dic in flat_dict if dic != {}]
@@ -96,9 +110,7 @@ class BoardIndividual(Individual):
                                     min_val = tmp_min
                 if min_row != -1 and min_col != -1 and min_key != 0:
                     self.boards[k][min_row][min_col] = min_key
-                    # print ("board[" + str(min_row) + "][" + str(min_col) + "] = " + str(min_key))
                     # TODO: update subsquareboard
-                    # self.subSquaresBoard[min_row * len(self.board) + min_col] = min_key
                     self.gradeboard[k][min_row][min_col] = {}
                     fitness = fitness - 1
                 self.initializeGradeboard(k)
