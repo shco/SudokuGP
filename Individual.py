@@ -115,7 +115,7 @@ class Individual(object):
             st += self.ConvertTreeToPrefixExpression(tree.getLeft())
             st += " "
         if tree.getRight() is not None:
-            st += self.ConvertTreeToPrefixExpression(tree.getLeft())
+            st += self.ConvertTreeToPrefixExpression(tree.getRight())
             st += " )"
         return st
 
@@ -128,18 +128,18 @@ class Individual(object):
             st += self.ConvertTreeToInfixExpression(tree.getLeft())
         st += " " + self.ConvertFromFunctionToOperator(tree.getOperationName()) + " "
         if tree.getRight() is not None and tree.getRight() is not None:
-            st +=  self.ConvertTreeToInfixExpression(tree.getRight())
+            st += self.ConvertTreeToInfixExpression(tree.getRight())
             st += ")"
         return st
 
     def ConvertFromFunctionToOperator(self, operationName):
         operationsName = {
             "Plus": "+",
-            "Minus":"-",
-            "Multi":"*",
+            "Minus": "-",
+            "Multi": "*",
             "div": "/",
             "Mod": "%",
-            "Maximum":"Max",
+            "Maximum": "Max",
             "Minimum": "Min",
         }
         if operationsName.get(operationName) is None:
@@ -147,5 +147,5 @@ class Individual(object):
         return operationsName.get(operationName)
 
     def __str__(self):
-        return "the tree as Prefix Sequence : \n" + self.treeAsPrefixExpression() + "\n\n" + self.treeAsInfixExpression()
+        return "the tree as Prefix Sequence : \n" + self.treeAsPrefixExpression() + "\n\nthe tree as Infix Sequence : \n" + self.treeAsInfixExpression()
 

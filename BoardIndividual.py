@@ -151,6 +151,7 @@ class BoardIndividual(Individual):
         else:
             objectRandNode = random.randint(2, object.tree.getSize())
             objectParent, objectRemoveNode = object.tree.getParentNode(object.tree, objectRandNode)
+
         if objectParent.height > copyParent.height:
             if objectParent.left == objectRemoveNode:
                 objectParent.setLeft(copyRemoveNode)
@@ -172,7 +173,7 @@ class BoardIndividual(Individual):
         realSquareLength = math.sqrt(len(board))
         squareLength = int(math.sqrt(len(board)))
         if realSquareLength != squareLength:
-            raise ValueError('sqrt(N) is a natural number')
+            raise ValueError('sqrt(N) is not a natural number')
         for i in range(len(board)):
             if len(board[i]) != len(board):
                 ValueError('You should send sudoku board with NxN dimensions')
