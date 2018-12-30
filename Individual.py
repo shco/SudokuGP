@@ -109,13 +109,13 @@ class Individual(object):
             self.copySubTree(sourceTree.getRight(), cloneTree.getRight())
 
     def ConvertTreeToPrefixExpression(self, tree):
-        st = "" + tree.getOperationName()
+        st = " " + tree.getOperationName()
         if tree.getLeft() is not None:
-            st += "("
-            st += self.ConvertTreeToPrefixExpression(tree.getLeft())
+            st += "( "
+            st += self.ConvertTreeToPrefixExpression(tree.getLeft()) + " "
         if tree.getRight() is not None:
             st += self.ConvertTreeToPrefixExpression(tree.getRight())
-            st += ")"
+            st += " )"
         return st
 
     def ConvertTreeToInfixExpression(self, tree):
@@ -123,12 +123,12 @@ class Individual(object):
         if tree is None:
             return ""
         if tree.getLeft() is not None and tree.getLeft() is not Node:
-            st += "("
+            st += "( "
             st += self.ConvertTreeToInfixExpression(tree.getLeft())
-        st += self.ConvertFromFunctionToOperator(tree.getOperationName())
+        st += " " + self.ConvertFromFunctionToOperator(tree.getOperationName()) + " "
         if tree.getRight() is not None and tree.getRight() is not None:
             st += self.ConvertTreeToInfixExpression(tree.getRight())
-            st += ")"
+            st += " )"
         return st
 
     def ConvertFromFunctionToOperator(self, operationName):
@@ -147,7 +147,7 @@ class Individual(object):
 
     @staticmethod
     def ConvertInfixStringToTree(str):
-        tree, _ = Individual.__ConvertInfixStringToTree__(str)
+        tree, _ = Individual.__ConvertInfixStringToTree__(str.replace(" ", ""))
         tree.setSize()
         tree.findHeight()
         return tree
