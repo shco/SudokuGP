@@ -20,8 +20,8 @@ class Population:
         return self.individuals[len(self.individuals) - 1]
 
     def nextGeneration(self):
-        newPop = []
-        for i in range(len(self.individuals)):
+        newPop = self.individuals[0:int(self.getGoodPopulationPercent() * len(self.individuals))]
+        for i in range(int(len(self.individuals) * (1 - self.getGoodPopulationPercent()))):
             newPop.append(self.selection.reproduce(self.individuals, self.individuals[i]))
         self.individuals = newPop
         self.sort()
