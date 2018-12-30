@@ -131,6 +131,10 @@ class BoardIndividual(Individual):
 
     def crossover(self, object):
         copy = self.clone()
+        copy.tree.setSize()
+        copy.tree.findTreeHeight()
+        object.tree.setSize()
+        object.tree.findTreeHeight()
         if copy.tree.getSize() == 1 and object.tree.getSize() == 1:
             node = Function(random.choice(list(Function.functions.keys())))
             node.setRight(copy.tree)

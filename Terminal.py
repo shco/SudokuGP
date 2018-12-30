@@ -95,6 +95,14 @@ class Terminal(TerminalOrFunction):
         return len([dict for row in block for dict in row if key in dict]) - 1
 
     @staticmethod
+    def countCellOptions(row, col, key, board, gradeboard, squaresboard):
+        return len(gradeboard[row][col].values())
+
+    @staticmethod
+    def countCellOptionsSquare(row, col, key, board, gradeboard, squaresboard):
+        return (len(gradeboard[row][col].values()))**2
+
+    @staticmethod
     def getSubSquare(row, col, board):
         squareLength = int(math.sqrt(len(board)))
         if squareLength - int(squareLength):
@@ -114,7 +122,6 @@ class Terminal(TerminalOrFunction):
         # "countEmptyCellInRow": countEmptyCellInRow.__get__(object),
         # "countEmptyCellInCol": countEmptyCellInCol.__get__(object),
         # "countEmptyCellInSquare": countEmptyCellInSquare.__get__(object),
-        # "numOfOptionsInCell": numOfOptionsInCell.__get__(object),
         # "numOfOptionsToAppearInBoard": numOfOptionsToAppearInBoard.__get__(object),
         # "countEmptyCellsInRowsContainsNum": countEmptyCellsInRowsContainsNum.__get__(object),
         # "countEmptyCellsInColsContainsNum": countEmptyCellsInColsContainsNum.__get__(object),
@@ -122,9 +129,11 @@ class Terminal(TerminalOrFunction):
         # "countEmptyCellsInRows_ThatNotContainsNum": countEmptyCellsInRows_ThatNotContainsNum.__get__(object),
         # "countEmptyCellsInCols_ThatNotContainsNum": countEmptyCellsInCols_ThatNotContainsNum.__get__(object),
         # "countEmptyCellsInSquare_ThatNotContainsNum": countEmptyCellsInSquare_ThatNotContainsNum.__get__(object),
-        "colContainNumAndEmptyCellAtRowDiff": colContainNumAndEmptyCellAtRowDiff.__get__(object),
-        "rowContainNumAndEmptyCellAtColDiff": rowContainNumAndEmptyCellAtColDiff.__get__(object),
+        # "colContainNumAndEmptyCellAtRowDiff": colContainNumAndEmptyCellAtRowDiff.__get__(object),
+        # "rowContainNumAndEmptyCellAtColDiff": rowContainNumAndEmptyCellAtColDiff.__get__(object),
         "countNumPossibleAtThisBlock": countNumPossibleAtThisBlock.__get__(object),
         "countNumPossibleAtThisRow": countNumPossibleAtThisRow.__get__(object),
         "countNumPossibleAtThisCol": countNumPossibleAtThisCol.__get__(object),
+        "countCellOptions": countCellOptions.__get__(object),
+        "countCellOptionsSquare": countCellOptionsSquare.__get__(object),
     }
