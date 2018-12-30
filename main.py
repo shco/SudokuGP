@@ -7,7 +7,7 @@ from Evolution import Evolution
 train_set = [38, 39, 40]
 train_set_size = len(train_set)
 
-pop_size = 100
+pop_size = 10
 max_generation = 100
 max_generation = 2
 mutation_prob = 0.1
@@ -18,7 +18,6 @@ height = 3
 sudoku_dim = 9
 
 file_path = "boards//realBoards.txt"
-file_util = sfu.SudokuFileUtil(file_path, sudoku_dim, train_set_size, boards_to_load)
 file_util = sfu.SudokuFileUtil(file_path, sudoku_dim, train_set_size, train_set)
 boards = file_util.loadPrintSudoku()
 
