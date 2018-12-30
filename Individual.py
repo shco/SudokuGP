@@ -111,12 +111,11 @@ class Individual(object):
     def ConvertTreeToPrefixExpression(self, tree):
         st = "" + tree.getOperationName()
         if tree.getLeft() is not None:
-            st += "( "
+            st += "("
             st += self.ConvertTreeToPrefixExpression(tree.getLeft())
-            st += " "
         if tree.getRight() is not None:
             st += self.ConvertTreeToPrefixExpression(tree.getRight())
-            st += " )"
+            st += ")"
         return st
 
     def ConvertTreeToInfixExpression(self, tree):
@@ -126,7 +125,7 @@ class Individual(object):
         if tree.getLeft() is not None and tree.getLeft() is not Node:
             st += "("
             st += self.ConvertTreeToInfixExpression(tree.getLeft())
-        st += " " + self.ConvertFromFunctionToOperator(tree.getOperationName()) + " "
+        st += self.ConvertFromFunctionToOperator(tree.getOperationName())
         if tree.getRight() is not None and tree.getRight() is not None:
             st += self.ConvertTreeToInfixExpression(tree.getRight())
             st += ")"
@@ -145,6 +144,30 @@ class Individual(object):
         if operationsName.get(operationName) is None:
             return operationName
         return operationsName.get(operationName)
+
+    @staticmethod
+    def ConvertInfixStringToTree(str):
+        tree, _ = Individual.__ConvertInfixStringToTree__(str)
+        tree.setSize()
+        tree.findHeight()
+        return tree
+
+    @staticmethod
+    def __ConvertInfixStringToTree__(str):
+        if str.startswith('('):
+            left, str = Individual.__ConvertInfixStringToTree__(str[1:])
+        isTerminal = [str.startswith(terminal) for terminal in list(Terminal.terminals.keys())]
+        if any(isTerminal):
+            operationName = list(Terminal.terminals.keys())[isTerminal.index(True)]
+            tree = Terminal(operationName)
+            return tree, str.replace(operationName, "", 1)
+        isFunction = [str.startswith(terminal) for terminal in ['*', "+"]]
+        if any(isFunction):
+            function = Function(['*', "+"][isFunction.index(True)])
+            function.setLeft(left)
+            right, str = Individual.__ConvertInfixStringToTree__(str[1:])
+            function.setRight(right)
+            return function, str[1:]
 
     def __str__(self):
         return "the tree as Prefix Sequence : \n" + self.treeAsPrefixExpression() + "\n\nthe tree as Infix Sequence : \n" + self.treeAsInfixExpression()

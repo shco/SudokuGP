@@ -5,7 +5,7 @@ import copy
 class Function(TerminalOrFunction):
     functions = {
         "Plus": lambda a, b: a + b,
-        "Minus": lambda a, b: abs(a - b),
+        # "Minus": lambda a, b: abs(a - b),
         "Multi": lambda a, b: a * b,
         # "div": lambda a, b: 0 i sf b == 0 else a / b,
         # "Mod": lambda a, b: 0 if b == 0 else a % b,

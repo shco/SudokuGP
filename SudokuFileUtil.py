@@ -2,13 +2,15 @@ import re
 import math
 
 class SudokuFileUtil:
-    def __init__(self, file_path, sudoku_dim):
+    def __init__(self, file_path, sudoku_dim, train_set_size, boards_to_load):
         self.file_path = file_path
         self.sudoku_dim = sudoku_dim
+        self.train_set_size = train_set_size
+        self.boards_to_load = boards_to_load
         self.boards = []
         self.boardsAmount = self.countBoardsInFile()
         self.checkIfValidDimensions()
-        self.sudoku_num_cache = -1
+        self.sudoku_num_cache = []
 
     def __str__(self):
         squareLength = math.sqrt(len(self.boards))
@@ -48,20 +50,28 @@ class SudokuFileUtil:
         return self.boards
 
     def loadSudokuMain(self):
-        randomIdx = 43 #random.randint(0, self.boardsAmount)
-        return self.loadSudoku(randomIdx)
+        for i in range(self.train_set_size):
+            if len(self.boards_to_load) < i:
+                while True:
+                    board_idx = random.randint(0, self.boardsAmount)
+                    if board_idx not in self.sudoku_num_cache:
+                        break
+            else:
+                board_idx = self.boards_to_load[i]
+                if board_idx >= self.boardsAmount | board_idx < 0:
+                    print("board num " + str(board_idx) + "is illegal")
+                    continue
+                if board_idx in self.sudoku_num_cache:
+                    print("you choose number " + str(board_idx) + "twice")
+                    continue
+
+            self.sudoku_num_cache.append(board_idx)
+            self.boards.append(self.loadSudoku(board_idx))
 
     def loadSudoku(self, sudoku_num):
-        if (sudoku_num >= self.boardsAmount | sudoku_num < 0):
-            self.sudoku_num_cache = -1
-            self.restSudoku()
-            return self.boards
-        if (sudoku_num == self.sudoku_num_cache):
-            return self.boards
-
-        self.sudoku_num_cache = sudoku_num
+        board = []
         founded = False
-        numOfSudokuBoardInFile = 0
+        num_of_sudoku_board_in_file = 0
         try:
             with open(self.file_path, "r") as f:
                 for line in f:
@@ -69,27 +79,29 @@ class SudokuFileUtil:
                         data = re.split(r",", line)
                         place = 0
                         for i in range(self.sudoku_dim):
-                            self.boards.append([int(num) for num in data[place:place+self.sudoku_dim]])
+                            board.append([int(num) for num in data[place:place+self.sudoku_dim]])
                             place += self.sudoku_dim
                         break
                     if 'Grid' in line:
-                        if(sudoku_num == numOfSudokuBoardInFile):
+                        if sudoku_num == num_of_sudoku_board_in_file:
                             founded = True
                         else:
-                            numOfSudokuBoardInFile += 1
+                            num_of_sudoku_board_in_file += 1
         except:
             print("inserted " + str(sudoku_num) + "as board index while there is only " + str(self.boardsAmount) + "boards")
 
-        return self.boards
+        return board
 
-    def restSudoku(self):
-        for i in range(0,self.boards):
-            for j in range(0, len(self.boards[i])):
+    # TODO: delete this function
+    def restSudoku(self, board):
+        for i in range(0, self.board):
+            for j in range(0, len(self.board[i])):
                 self.board[i][j] = 0
 
     def printSudokuMain(self):
-        print("Sudoku :" + str(self.sudoku_num_cache))
-        SudokuFileUtil.printSudoku(self.boards)
+        for i in range(len(self.boards)):
+            print("Sudoku :" + str(self.sudoku_num_cache[i]))
+            SudokuFileUtil.printSudoku(self.boards[i])
 
     @staticmethod
     def printSudoku(board):
