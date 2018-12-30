@@ -48,7 +48,7 @@ class SudokuFileUtil:
         return self.boards
 
     def loadSudokuMain(self):
-        randomIdx = 42 #random.randint(0, self.boardsAmount)
+        randomIdx = 43 #random.randint(0, self.boardsAmount)
         return self.loadSudoku(randomIdx)
 
     def loadSudoku(self, sudoku_num):
