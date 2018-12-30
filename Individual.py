@@ -111,11 +111,11 @@ class Individual(object):
     def ConvertTreeToPrefixExpression(self, tree):
         st = " " + tree.getOperationName()
         if tree.getLeft() is not None:
-            st += "( "
-            st += self.ConvertTreeToPrefixExpression(tree.getLeft()) + " "
+            st += "("
+            st += " " + self.ConvertTreeToPrefixExpression(tree.getLeft()) + " "
         if tree.getRight() is not None:
             st += self.ConvertTreeToPrefixExpression(tree.getRight())
-            st += " )"
+            st += ")"
         return st
 
     def ConvertTreeToInfixExpression(self, tree):

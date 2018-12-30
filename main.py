@@ -12,7 +12,7 @@ max_generation = 100
 mutation_prob = 0.1
 crossover_prob = 0.9
 good_population_percent = 0.3
-height = 5
+height = 3
 sudoku_dim = 9
 
 file_path = "boards//realBoards.txt"
@@ -22,7 +22,7 @@ boards = file_util.loadPrintSudoku()
 prototype = BoardIndividual(height, boards)
 select = TournamentSelection(mutation_prob, crossover_prob, good_population_percent)
 first_pop = Population(pop_size, prototype, select)
-
+first_pop.replaceIndividual('(((countCellOptions+countNumPossibleAtThisCol)+(countNumPossibleAtThisBlock+countNumPossibleAtThisRow))+((countNumPossibleAtThisRow*countCellOptions)*(countCellOptions+countCellOptions)))')
 evolution = Evolution(first_pop, max_generation)
 best_individual = evolution.evolve()
 

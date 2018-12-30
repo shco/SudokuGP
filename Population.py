@@ -1,6 +1,5 @@
 from BoardIndividual import BoardIndividual
-import ctypes
-import os
+from Individual import Individual
 
 
 class Population:
@@ -12,6 +11,9 @@ class Population:
             self.individuals[i].reGenerateFullTree()
         self.sort()
         self.selection = selection
+
+    def replaceIndividual(self, str_tree):
+        self.individuals[-1].tree = Individual.ConvertInfixStringToTree(str_tree)
 
     def getBest(self):
         return self.individuals[0]
