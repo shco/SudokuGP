@@ -135,5 +135,5 @@ class Terminal(TerminalOrFunction):
         "countNumPossibleAtThisRow": countNumPossibleAtThisRow.__get__(object),
         "countNumPossibleAtThisCol": countNumPossibleAtThisCol.__get__(object),
         "countCellOptions": countCellOptions.__get__(object),
-        "countCellOptionsSquare": countCellOptionsSquare.__get__(object),
+        "squareOfCountCellOptions": countCellOptionsSquare.__get__(object),
     }
