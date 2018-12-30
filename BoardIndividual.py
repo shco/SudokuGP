@@ -42,7 +42,7 @@ class BoardIndividual(Individual):
             buf+="\n"
             if (i+1) % squareLength == 0:
                 buf += "\n"
-        buf+=super().__str__()
+        buf += super().__str__()
         return buf
 
     def isForward(self):
