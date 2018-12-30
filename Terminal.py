@@ -82,24 +82,17 @@ class Terminal(TerminalOrFunction):
 
     @staticmethod
     def countNumPossibleAtThisRow(row, col, key, board, gradeboard, squaresboard):
-        counter = 0
-        for dict in gradeboard[row]:
-            if key in dict:
-                counter += 1
-        return counter
+        return len([dict for dict in gradeboard[row] if key in dict]) - 1
 
     @staticmethod
     def countNumPossibleAtThisCol(row, col, key, board, gradeboard, squaresboard):
-        counter = 0
-        for i in range(len(gradeboard)):
-            if key in gradeboard[i][col]:
-                counter += 1
-        return counter
+        tran_board = list(map(list, zip(*gradeboard)))
+        return len([dict for dict in tran_board[col] if key in dict]) - 1
 
     @staticmethod
     def countNumPossibleAtThisBlock(row, col, key, board, gradeboard, squaresboard):
-        # TODO implement this method
-        pass
+        block = Terminal.getSubSquare(row, col, gradeboard)
+        return len([dict for row in block for dict in row if key in dict]) - 1
 
     @staticmethod
     def getSubSquare(row, col, board):
@@ -131,6 +124,7 @@ class Terminal(TerminalOrFunction):
         # "countEmptyCellsInSquare_ThatNotContainsNum": countEmptyCellsInSquare_ThatNotContainsNum.__get__(object),
         "colContainNumAndEmptyCellAtRowDiff": colContainNumAndEmptyCellAtRowDiff.__get__(object),
         "rowContainNumAndEmptyCellAtColDiff": rowContainNumAndEmptyCellAtColDiff.__get__(object),
-        # "countNumPossibleAtThisRow": countNumPossibleAtThisRow.__get__(object),
-        # "countNumPossibleAtThisCol": countNumPossibleAtThisCol.__get__(object),
+        "countNumPossibleAtThisBlock": countNumPossibleAtThisBlock.__get__(object),
+        "countNumPossibleAtThisRow": countNumPossibleAtThisRow.__get__(object),
+        "countNumPossibleAtThisCol": countNumPossibleAtThisCol.__get__(object),
     }

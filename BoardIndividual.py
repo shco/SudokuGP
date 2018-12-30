@@ -77,6 +77,8 @@ class BoardIndividual(Individual):
                                 min_val = tmp_min
             if min_row != -1 and min_col != -1 and min_key != 0:
                 self.board[min_row][min_col] = min_key
+                # TODO: update subsquareboard
+                # self.subSquaresBoard[min_row * len(self.board) + min_col] = min_key
                 self.gradeboard[min_row][min_col] = {}
                 fitness = fitness - 1
             self.initializeGradeboard()
